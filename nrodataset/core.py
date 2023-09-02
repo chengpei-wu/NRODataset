@@ -4,13 +4,14 @@ import pkg_resources
 import scipy.io as sio
 
 
-def load_networks(network_type, network_size):
+def load_networks(network_type, network_size, isd=0):
     if network_type[:5] != 'real-':
-        file_path = pkg_resources.resource_filename(__name__, f'networks/{network_type}_{network_size}.mat')
+        file_path = pkg_resources.resource_filename(__name__, f'networks/{network_type}_isd{isd}_{network_size}.mat')
     else:
         file_path = pkg_resources.resource_filename(__name__, f'networks/real-{network_type}.mat')
     mat = sio.loadmat(file_path)
     num_instance = mat['num_instances'][0, 0]
+    assert isd == mat['isd'][0, 0]
     isd = mat['isd'][0, 0]
     isw = mat['isw'][0, 0]
     original_networks = []
